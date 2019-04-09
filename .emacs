@@ -12,8 +12,6 @@
 (global-flycheck-mode)
 
 (projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'command-projectile-map)
 
 (setq show-paren-mode-delay 0)
 (show-paren-mode 1)
@@ -27,6 +25,9 @@
 (electric-pair-mode)
 (counsel-mode)
 (ivy-prescient-mode)
+(tool-bar-mode -1)
+(toggle-scroll-bar -1)
+(global-display-line-numbers-mode)
 
 (advice-add 'risky-local-variable-p :override #'ignore)
 
@@ -53,7 +54,7 @@ Repeated invocations toggle between the two most recently open buffers."
 "b" '(:ignore t :which-key "buffers")
 "b b" 'buffer-menu
 "f" '(:ignore t :which-key "files")
-"fed" (lambda() (interactive)(find-file "~/.emacs"))
+"f e d" (lambda() (interactive)(find-file "~/.emacs"))
 "f f" 'counsel-find-file
 "b k" 'buf-move-up
 "b j" 'buf-move-down
@@ -63,6 +64,7 @@ Repeated invocations toggle between the two most recently open buffers."
 "g d" 'git-gutter-mode
 "o f f" 'fzf
 "o f r" 'ff-find-related-file
+"p p" 'projectile-switch-project
 "w d" 'evil-window-delete
 "w /" 'split-window-right
 "w <up>" 'evil-window-up
