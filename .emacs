@@ -1,7 +1,7 @@
 (setq url-proxy-services
       '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-        ("http" . "artifactsqa:9090")
-        ("https" . "artifactsqa:9090")))
+	("http" . "artifactsqa:9090")
+	("https" . "artifactsqa:9090")))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -13,6 +13,17 @@
 
 (projectile-mode +1)
 
+(unless window-system
+  (require 'mwheel)
+  (require 'mouse)
+  (xterm-mouse-mode t)
+  (mouse-wheel-mode t)
+  (defun track-mouse (e))
+  (defvar mouse-sel-mode)
+  (setq mouse-sel-mode t)
+  )
+
+(defvar show-paren-mode-delay)
 (setq show-paren-mode-delay 0)
 (show-paren-mode 1)
 
@@ -34,9 +45,25 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 
-(setq clang-format-executable "/n/anaconda/2.5.0/envs/1.8/bin/clang-format")
+(defvar clang-format-executable)
+(defvar c-default-style)
+(defvar c-basic-offset)
+
+(setq clang-format-executable "/n/nix/tech/var/nix/profiles/ciusers/bin/clang-format")
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+(defconst pdt-c-style
+  '("linux"
+    (c-offsets-alist . ((topmost-intro . [0])
+						(access-label . [2])))
+    ))
+
+(c-add-style "pdt" pdt-c-style)
+
+(setq-default c-default-style "pdt"
+			  tab-width 4
+			  c-basic-offset 4)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro-18"))
 (set-face-attribute 'default t :font "Source Code Pro-18")
@@ -73,6 +100,22 @@ Repeated invocations toggle between the two most recently open buffers."
 "w <right>" 'evil-window-right
 "TAB" 'er-switch-to-previous-buffer
 "SPC" 'counsel-M-x)
+
+
+; Code in order to make sure Flycheck errors split horizontally
+; and do not take up too much space
+(defun display-buffer-window-below-and-shrink (buffer alist)
+  (let ((window (or (get-buffer-window buffer)
+					(display-buffer-below-selected buffer alist))))
+	(when window
+	  (message "Here window is %s" window)
+	  (fit-window-to-buffer window 20)
+	  (shrink-window-if-larger-than-buffer window)
+	  window)))
+
+(add-to-list 'display-buffer-alist
+			 `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
+			   (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
