@@ -89,7 +89,7 @@ Repeated invocations toggle between the two most recently open buffers."
 "b j" 'buf-move-down
 "b h" 'buf-move-left
 "b l" 'buf-move-right
-"b d" 'kill-buffer
+"b d" 'kill-this-buffer
 "g d" 'git-gutter-mode
 "g l" 'avy-goto-line
 "g c" 'avy-goto-char
