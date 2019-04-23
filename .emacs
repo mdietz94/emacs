@@ -47,6 +47,7 @@ ARG: what to grep for."
 
 (fset 'c-indent-region 'clang-format-region)
 
+(setq confirm-kill-emacs 'yes-or-no-p)
 (electric-pair-mode)
 (counsel-mode)
 (ivy-prescient-mode)
