@@ -126,6 +126,9 @@ Repeated invocations toggle between the two most recently open buffers."
 "TAB" 'er-switch-to-previous-buffer
 "SPC" 'counsel-M-x)
 
+(general-define-key
+:keymaps '(normal)
+"s" 'avy-goto-char)
 
 ; Code in order to make sure Flycheck errors split horizontally
 ; and do not take up too much space
