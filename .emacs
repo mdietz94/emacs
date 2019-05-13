@@ -110,7 +110,7 @@ Repeated invocations toggle between the two most recently open buffers."
 "g c" 'avy-goto-char
 "g 2 c" 'avy-goto-char-2
 "g w" 'avy-goto-word-1
-"o f f" 'fzf
+"o f f" 'fzf-git-files
 "o f r" 'ff-find-related-file
 "p p" 'projectile-switch-project
 "w d" 'evil-window-delete
