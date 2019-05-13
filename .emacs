@@ -45,8 +45,6 @@ ARG: what to grep for."
 
 (load-theme 'zenburn t)
 
-(fset 'c-indent-region 'clang-format-region)
-
 (setq confirm-kill-emacs 'yes-or-no-p)
 (electric-pair-mode)
 (counsel-mode)
@@ -69,17 +67,18 @@ ARG: what to grep for."
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
-(defconst pdt-c-style
-  '("linux"
-    (c-offsets-alist . ((topmost-intro . [0])
-						(access-label . [2])))
-    ))
+(setq-default c-default-style "linux")
 
-(c-add-style "pdt" pdt-c-style)
+(defun setup-c-mode ()
+  "Setup options for 'c-mode'."
+  (fset 'c-indent-region 'clang-format-region)
+  (setq tab-width 4)
+  (setq c-basic-offset 4)
+  (c-set-offset 'topmost-intro [0])
+  (c-set-offset 'access-label [2])
+  )
 
-(setq-default c-default-style "pdt"
-			  tab-width 4
-			  c-basic-offset 4)
+(add-hook 'c-mode-common-hook 'setup-c-mode)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro-18"))
 (set-face-attribute 'default t :font "Source Code Pro-18")
@@ -129,6 +128,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (general-define-key
 :keymaps '(normal)
 "s" 'avy-goto-char)
+
 
 ; Code in order to make sure Flycheck errors split horizontally
 ; and do not take up too much space
