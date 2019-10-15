@@ -1,7 +1,7 @@
 (setq url-proxy-services
       '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-	("http" . "artifactsqa:9090")
-	("https" . "artifactsqa:9090")))
+        ("http" . "artifactsqa:9090")
+        ("https" . "artifactsqa:9090")))
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -10,6 +10,12 @@
 (global-evil-leader-mode)
 (evil-mode 1)
 (global-flycheck-mode)
+
+(defvar tramp-default-method)
+(defvar tramp-shell-prompt-pattern)
+(setq tramp-default-method "ssh")
+(setq tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*")
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 
 (projectile-mode +1)
 
@@ -153,16 +159,16 @@ Repeated invocations toggle between the two most recently open buffers."
 ; and do not take up too much space
 (defun display-buffer-window-below-and-shrink (buffer alist)
   (let ((window (or (get-buffer-window buffer)
-					(display-buffer-below-selected buffer alist))))
-	(when window
-	  (message "Here window is %s" window)
-	  (fit-window-to-buffer window 20)
-	  (shrink-window-if-larger-than-buffer window)
-	  window)))
+                                        (display-buffer-below-selected buffer alist))))
+        (when window
+          (message "Here window is %s" window)
+          (fit-window-to-buffer window 20)
+          (shrink-window-if-larger-than-buffer window)
+          window)))
 
 (add-to-list 'display-buffer-alist
-			 `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
-			   (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))
+                         `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
+                           (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
